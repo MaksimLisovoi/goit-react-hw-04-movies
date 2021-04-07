@@ -1,0 +1,16 @@
+.picture {
+  display: block;
+  width: 300px;
+
+  border-radius: 5px;
+  background-color: rgb(231, 220, 220);
+}
+
+.title {
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.33;
+  margin-bottom: 0;
+  text-transform: uppercase;
+  padding: 5px 5px 0px 5px;
+}
