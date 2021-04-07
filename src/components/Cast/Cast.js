@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import s from "./Cast.module.css";
 import default_img from "./default_img.png";
+import PropTypes from "prop-types";
 
 class Cast extends Component {
   state = {};
@@ -32,5 +33,15 @@ class Cast extends Component {
     );
   }
 }
+
+Cast.propTypes = {
+  cast: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      profile_path: PropTypes.string,
+      name: PropTypes.string.isRequired,
+    })
+  ),
+};
 
 export default Cast;

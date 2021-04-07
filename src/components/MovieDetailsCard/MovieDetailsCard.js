@@ -1,6 +1,7 @@
 import React from "react";
 import s from "./MovieDetailsCard.module.css";
-import shortid from "shortid";
+import { arrayOf, object } from "prop-types";
+import PropTypes from "prop-types";
 
 const MovieDetailsCard = ({ title, imgUrl, overview, genres, rating }) => {
   return (
@@ -21,6 +22,16 @@ const MovieDetailsCard = ({ title, imgUrl, overview, genres, rating }) => {
       </div>
     </div>
   );
+};
+
+MovieDetailsCard.propTypes = {
+  movie: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    imgUrl: PropTypes.string,
+    overview: PropTypes.string.isRequired,
+    genres: arrayOf(object),
+    rating: PropTypes.number,
+  }),
 };
 
 export default MovieDetailsCard;

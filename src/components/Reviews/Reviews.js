@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import s from "./Reviews.module.css";
+import PropTypes from "prop-types";
 
 class Reviews extends Component {
   state = {};
@@ -10,10 +11,10 @@ class Reviews extends Component {
       <>
         <h1>Reviews</h1>
         <ul className={s.reviewList}>
-          {this.props.reviews.map((el) => (
-            <li key={el.id}>
-              <h2>Author:{el.author}</h2>
-              <p className={s.review}>{el.content}</p>
+          {this.props.reviews.map(({ id, author, content }) => (
+            <li key={id}>
+              <h2>Author:{author}</h2>
+              <p className={s.review}>{content}</p>
             </li>
           ))}
         </ul>
@@ -22,4 +23,13 @@ class Reviews extends Component {
   }
 }
 
+Reviews.propTypes = {
+  reviews: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      author: PropTypes.string.isRequired,
+      content: PropTypes.string.isRequired,
+    })
+  ),
+};
 export default Reviews;
