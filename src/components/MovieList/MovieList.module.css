@@ -1,9 +1,12 @@
 .movieList {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin: 0 auto;
+  margin-right: -15px;
+  margin-left: -15px;
 }
 .container {
   margin: 0 auto;
@@ -16,8 +19,20 @@
   transition: all 500ms cubic-bezier(0.4, 0, 0.2, 1);
   /* width: calc((100% - 60px) / 3); */
   width: 300px;
-  margin-right: 30px;
+  margin-right: 15px;
+  margin-left: 15px;
   margin-bottom: 30px;
+  padding-bottom: 10px;
+}
+.MovieLink {
+  text-decoration: none;
+  color: black;
+}
+
+.movieItem:hover {
+  transform: scale(1.02);
+  box-shadow: 0 14px 28px rgba(160, 152, 152, 0.25),
+    0 10px 10px rgba(160, 152, 152, 0.25);
 }
 /* .movieItem:not(:last-child) {
   margin-right: 30px;

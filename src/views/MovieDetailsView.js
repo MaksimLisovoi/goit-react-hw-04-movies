@@ -1,10 +1,15 @@
 import React, { Component } from "react";
 import { getMovie, getCast, getReviews } from "../services/MovieDbApi";
 
-import { NavLink, Route, Switch } from "react-router-dom";
-import Cast from "../components/Cast";
-import Reviews from "../components/Reviews";
+import { NavLink, Route } from "react-router-dom";
+
+import MovieDetailsCard from "../components/MovieDetailsCard/MovieDetailsCard";
+import Cast from "../components/Cast/Cast";
+import Reviews from "../components/Reviews/Reviews";
+import InfoBar from "../components/InfoBar/InfoBar";
 import routes from "../routes";
+
+import _ from "lodash";
 
 class MovieDetailsView extends Component {
   state = {
@@ -12,6 +17,7 @@ class MovieDetailsView extends Component {
     poster_path: null,
     overview: null,
     genres: null,
+
     cast: [],
     reviews: [],
   };
@@ -36,23 +42,30 @@ class MovieDetailsView extends Component {
   };
 
   render() {
-    const { title, poster_path, overview, genres, cast, reviews } = this.state;
+    const {
+      title,
+      poster_path,
+      overview,
+      genres,
+      cast,
+      reviews,
+      vote_average,
+    } = this.state;
     const { match } = this.props;
 
     return (
       <>
         <button type="button" onClick={this.handleGoBack}>
-          Вернуться назад{" "}
+          Go back
         </button>
-        <h2>{title}</h2>
-        <img
-          src={`https://image.tmdb.org/t/p/w500/${poster_path}`}
-          alt={title}
-          width="300px"
+        <MovieDetailsCard
+          title={title}
+          imgUrl={poster_path}
+          overview={overview}
+          genres={genres}
+          rating={vote_average}
         />
-        <p>{overview}</p>
-        <NavLink to={`${match.url}${routes.cast}`}>Cast</NavLink>
-        <NavLink to={`${match.url}${routes.reviews}`}>Reviews</NavLink>
+        <InfoBar match={match} />
 
         <Route
           exact
@@ -62,7 +75,13 @@ class MovieDetailsView extends Component {
         <Route
           exact
           path={`${match.path}${routes.reviews}`}
-          render={(props) => <Reviews {...props} reviews={reviews} />}
+          render={(props) =>
+            !_.isEmpty(reviews) ? (
+              <Reviews {...props} reviews={reviews} />
+            ) : (
+              <p className="no-reviews">No reviews.</p>
+            )
+          }
         />
 
         {/* <Route path={match.path} component={Cast} /> */}

@@ -1,0 +1,9 @@
+.Searchinput {
+  padding: 15px;
+  width: 50%;
+  border-radius: 10px;
+}
+.FormContainer {
+  padding-top: 30px;
+  text-align: center;
+}

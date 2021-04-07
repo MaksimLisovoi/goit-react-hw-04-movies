@@ -10,7 +10,7 @@ const MoviePreview = ({ imgUrl, title }) => {
         src={`https://image.tmdb.org/t/p/w500/${imgUrl}`}
         alt={title}
       />
-      <div>
+      <div className={s.description}>
         <h5 className={s.title}>{title}</h5>
       </div>
     </>

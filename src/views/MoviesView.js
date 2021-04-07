@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { getSearchedMovie } from "../services/MovieDbApi";
 import MovieList from "../components/MovieList/MovieList";
+import SearchForm from "../components/SearchForm/SearchForm";
 
 class MoviesView extends Component {
   state = {
@@ -50,10 +51,7 @@ class MoviesView extends Component {
     const { movies } = this.state;
     return (
       <>
-        <h1>Эта страница фильмов </h1>;
-        <form onSubmit={this.onSubmit}>
-          <input name="queryValue" type="text" placeholder=" your drink" />
-        </form>
+        <SearchForm onSubmit={this.onSubmit} />
         {movies && <MovieList movies={movies} />}
       </>
     );

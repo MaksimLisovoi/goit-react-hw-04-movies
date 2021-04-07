@@ -1,0 +1,15 @@
+.CastList {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: -15px;
+  margin-right: -15px;
+  list-style: none;
+}
+.CastItem {
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-bottom: 30px;
+}
+.CastSection {
+  text-align: center;
+}
