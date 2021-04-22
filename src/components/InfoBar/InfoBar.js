@@ -3,14 +3,17 @@ import routes from "../../routes";
 import { NavLink } from "react-router-dom";
 import s from "./InfoBar.module.css";
 
-const InfoBar = ({ match }) => {
+const InfoBar = ({ match, location }) => {
   return (
     <ul className={s.InfoList}>
       <li className={s.InfoListItem}>
         <NavLink
           activeClassName={s.NavLinkActive}
           className={s.NavLink}
-          to={`${match.url}${routes.cast}`}
+          to={{
+            pathname: `${match.url}${routes.cast}`,
+            state: { ...location.state },
+          }}
         >
           Cast
         </NavLink>
@@ -19,7 +22,10 @@ const InfoBar = ({ match }) => {
         <NavLink
           activeClassName={s.NavLinkActive}
           className={s.NavLink}
-          to={`${match.url}${routes.reviews}`}
+          to={{
+            pathname: `${match.url}${routes.reviews}`,
+            state: { ...location.state },
+          }}
         >
           Reviews
         </NavLink>

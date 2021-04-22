@@ -54,7 +54,7 @@ class MovieDetailsView extends Component {
       vote_average,
     } = this.state;
     const { match } = this.props;
-
+    const { location } = this.props;
     return (
       <>
         <button type="button" onClick={this.handleGoBack}>
@@ -69,7 +69,7 @@ class MovieDetailsView extends Component {
         />
 
         <Suspense fallback={<Spinner />}>
-          <InfoBar match={match} />
+          <InfoBar match={match} location={location} />
 
           <Route
             exact
