@@ -1,15 +1,25 @@
-import React, { Component } from "react";
-import { getMovie, getCast, getReviews } from "../services/MovieDbApi";
-
-import { NavLink, Route } from "react-router-dom";
+import React, { Component, Suspense, lazy } from "react";
+import { getMovie } from "../services/MovieDbApi";
+import { Route } from "react-router-dom";
 
 import MovieDetailsCard from "../components/MovieDetailsCard/MovieDetailsCard";
-import Cast from "../components/Cast/Cast";
-import Reviews from "../components/Reviews/Reviews";
-import InfoBar from "../components/InfoBar/InfoBar";
+import Spinner from "../components/Spinner/Spinner";
+
 import routes from "../routes";
 
-import _ from "lodash";
+const InfoBar = lazy(() =>
+  import(
+    "../components/InfoBar/InfoBar" /*webpackChunkName: 'infobar-component' */
+  )
+);
+const Reviews = lazy(() =>
+  import(
+    "../components/Reviews/Reviews" /*webpackChunkName: 'reviews-component' */
+  )
+);
+const Cast = lazy(() =>
+  import("../components/Cast/Cast" /*webpackChunkName: 'cast-component' */)
+);
 
 class MovieDetailsView extends Component {
   state = {
@@ -17,22 +27,15 @@ class MovieDetailsView extends Component {
     poster_path: null,
     overview: null,
     genres: null,
-
-    cast: [],
-    reviews: [],
   };
 
   async componentDidMount() {
     const { movieId } = this.props.match.params;
     const movie = await getMovie(movieId);
-    const cast = await getCast(movieId);
-    const reviews = await getReviews(movieId);
-    console.log(movie);
-    // const genres = movie.genres.map((genre) => genre.name);
 
-    this.setState({ ...movie, cast, reviews });
-    console.log(this.state);
-    // this.setState({ genres });
+    console.log(movie);
+
+    this.setState({ ...movie });
   }
 
   handleGoBack = () => {
@@ -47,8 +50,7 @@ class MovieDetailsView extends Component {
       poster_path,
       overview,
       genres,
-      cast,
-      reviews,
+
       vote_average,
     } = this.state;
     const { match } = this.props;
@@ -65,26 +67,21 @@ class MovieDetailsView extends Component {
           genres={genres}
           rating={vote_average}
         />
-        <InfoBar match={match} />
 
-        <Route
-          exact
-          path={`${match.path}${routes.cast}`}
-          render={(props) => <Cast {...props} cast={cast} />}
-        />
-        <Route
-          exact
-          path={`${match.path}${routes.reviews}`}
-          render={(props) =>
-            !_.isEmpty(reviews) ? (
-              <Reviews {...props} reviews={reviews} />
-            ) : (
-              <p className="no-reviews">No reviews.</p>
-            )
-          }
-        />
+        <Suspense fallback={<Spinner />}>
+          <InfoBar match={match} />
 
-        {/* <Route path={match.path} component={Cast} /> */}
+          <Route
+            exact
+            path={`${match.path}${routes.cast}`}
+            render={(props) => <Cast {...props} />}
+          />
+          <Route
+            exact
+            path={`${match.path}${routes.reviews}`}
+            render={(props) => <Reviews {...props} />}
+          />
+        </Suspense>
       </>
     );
   }

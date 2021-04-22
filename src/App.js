@@ -7,15 +7,6 @@ import AppBar from "./components/AppBar/AppBar";
 import Spinner from "./components/Spinner/Spinner";
 import s from "./styles/base.module.css";
 
-const linkStyles = {
-  base: {
-    color: "black",
-  },
-  active: {
-    color: "red",
-  },
-};
-
 const HomeView = lazy(() =>
   import("./views/HomeView.js" /*webpackChunkName: 'home-view' */)
 );

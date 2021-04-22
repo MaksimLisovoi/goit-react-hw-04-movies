@@ -1,17 +1,29 @@
 import React, { Component } from "react";
+import { getReviews } from "../../services/MovieDbApi";
+
 import s from "./Reviews.module.css";
 import PropTypes from "prop-types";
 
+import _ from "lodash";
+
 class Reviews extends Component {
-  state = {};
+  state = {
+    reviews: [],
+  };
+
+  async componentDidMount() {
+    const { movieId } = this.props.match.params;
+    const reviews = await getReviews(movieId);
+
+    this.setState({ reviews });
+  }
 
   render() {
-    console.log(this.props);
-    return (
+    return !_.isEmpty(this.state.reviews) ? (
       <>
         <h1>Reviews</h1>
         <ul className={s.reviewList}>
-          {this.props.reviews.map(({ id, author, content }) => (
+          {this.state.reviews.map(({ id, author, content }) => (
             <li key={id}>
               <h2>Author:{author}</h2>
               <p className={s.review}>{content}</p>
@@ -19,6 +31,8 @@ class Reviews extends Component {
           ))}
         </ul>
       </>
+    ) : (
+      <p className="no-reviews">No reviews.</p>
     );
   }
 }

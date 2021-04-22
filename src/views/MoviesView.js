@@ -1,50 +1,51 @@
 import React, { Component } from "react";
 import { getSearchedMovie } from "../services/MovieDbApi";
+import queryString from "query-string";
 import MovieList from "../components/MovieList/MovieList";
 import SearchForm from "../components/SearchForm/SearchForm";
 
 class MoviesView extends Component {
   state = {
     movies: [],
-    queryValue: "",
+    query: "",
   };
 
   async componentDidMount() {
-    const { queryValue } = this.state;
+    const { search, pathname } = this.props.location;
 
-    const movies = await getSearchedMovie(queryValue);
-
-    this.setState({ movies });
+    if (pathname && search) {
+      this.setState({ query: queryString.parse(search).query });
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { queryValue } = this.state;
+    const { query } = this.state;
 
-    if (prevState.queryValue !== queryValue) {
+    if (prevState.query !== query) {
       this.getData();
     }
   }
 
   async getData() {
-    const { queryValue } = this.state;
+    const { query } = this.state;
 
-    const movies = await getSearchedMovie(queryValue);
+    const movies = await getSearchedMovie(query);
 
     this.setState({ movies });
   }
 
-  validateInput = (value) => {
-    if (value.trim() !== "") {
-      this.setState({ queryValue: value });
-    }
-  };
+  onSubmit = (newQuery) => {
+    const { history, location } = this.props;
 
-  onSubmit = (e) => {
-    const { queryValue } = e.target;
-    e.preventDefault();
+    this.setState({
+      movies: [],
+      query: newQuery,
+    });
 
-    this.validateInput(queryValue.value);
-    queryValue.value = "";
+    history.push({
+      ...location,
+      search: `?query=${newQuery}`,
+    });
   };
 
   render() {

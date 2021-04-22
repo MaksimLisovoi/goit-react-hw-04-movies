@@ -1,10 +1,21 @@
 import React, { Component } from "react";
-import s from "./Cast.module.css";
+import { getCast } from "../../services/MovieDbApi";
+
 import default_img from "./default_img.png";
 import PropTypes from "prop-types";
+import s from "./Cast.module.css";
 
 class Cast extends Component {
-  state = {};
+  state = {
+    cast: [],
+  };
+
+  async componentDidMount() {
+    const { movieId } = this.props.match.params;
+    const cast = await getCast(movieId);
+
+    this.setState({ cast });
+  }
 
   render() {
     console.log(this.props);
@@ -13,7 +24,7 @@ class Cast extends Component {
         <section className={s.CastSection}>
           <h1>Cast</h1>
           <ul className={s.CastList}>
-            {this.props.cast.map(({ id, profile_path, name }) => (
+            {this.state.cast.map(({ id, profile_path, name }) => (
               <li className={s.CastItem} key={id}>
                 <img
                   width="150"
